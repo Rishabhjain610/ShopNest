@@ -1,0 +1,148 @@
+import React, { useState } from "react";
+import { FaEye, FaEyeSlash, FaEnvelope, FaKey } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useContext } from "react";
+import { toast } from "react-toastify";
+import {AuthDataContext} from "../contextapi/AuthContext.jsx";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../utils/firebase.js";
+const Login = () => {
+  const { serverUrl } = useContext(AuthDataContext);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const result = await axios.post(`${serverUrl}/api/auth/login`, formData, {
+        withCredentials: true,
+      });
+      console.log("Login successful:", result.data);
+      toast.success(result.data.message);
+      navigate('/');
+      // Handle successful login (e.g., redirect or show a success message)
+    } catch (error) {
+      console.error("Login error:", error);
+    }
+  };
+
+  const handleGoogleAuth = async (e) => {
+    e.preventDefault();
+        try {
+          const result = await signInWithPopup(auth, provider);
+          const user = result.user;
+          const name = user.displayName;
+          const email = user.email;
+          const result2 = await axios.post(
+            `${serverUrl}/api/auth/googleLogin`,
+            { name, email },
+            {
+              withCredentials: true,
+            }
+          );
+          console.log("Google authentication successful:", result2.data);
+          toast.success(result2.data.message);
+          navigate("/");
+        } catch (error) {
+          console.error("Google authentication error:", error);
+          toast.error("Google authentication failed. Please try again.");
+        }
+    // Add Google auth logic here
+  };
+  const navigate = useNavigate();
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+      <div className="w-full max-w-sm bg-white rounded-lg shadow-lg border border-black p-6">
+        <div className="text-center mb-6">
+          <h2 className="text-2xl font-bold text-black">Login In</h2>
+          <p className="text-sm text-gray-600 mt-1">Welcome back to ShopNest</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Email Field */}
+          <div className="relative">
+            <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email address"
+              value={formData.email}
+              onChange={(e) =>
+                setFormData({ ...formData, [e.target.name]: e.target.value })
+              }
+              required
+              className="w-full pl-10 pr-4 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black bg-white text-black placeholder-gray-500"
+            />
+          </div>
+          <div className="relative">
+            <FaKey className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, [e.target.name]: e.target.value })
+              }
+              required
+              className="w-full pl-10 pr-10 py-3 border border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-black bg-white text-black placeholder-gray-500"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2"
+            >
+              {showPassword ? (
+                <FaEyeSlash className="h-4 w-4 text-gray-500 hover:text-black" />
+              ) : (
+                <FaEye className="h-4 w-4 text-gray-500 hover:text-black" />
+              )}
+            </button>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full py-3 bg-black text-white font-medium rounded-lg hover:bg-gray-800 transition duration-200"
+          >
+            Login
+          </button>
+
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300" />
+            </div>
+            <div className="relative flex justify-center text-xs">
+              <span className="px-2 bg-white text-gray-500">or</span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleGoogleAuth}
+            className="w-full py-3 border border-black bg-white text-black font-medium rounded-lg hover:bg-gray-50 transition duration-200 flex items-center justify-center"
+          >
+            <FcGoogle className="h-5 w-5 mr-2" />
+            Continue with Google
+          </button>
+
+          <p className="text-center text-sm text-gray-600 mt-4">
+            Don't have an account?{" "}
+            <a
+              onClick={() => navigate("/signup")}
+              className="text-black font-medium hover:underline"
+            >
+              Sign Up
+            </a>
+          </p>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default Login;
