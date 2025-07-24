@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const ConnectDb = require("./DB/db");
 const PORT = process.env.PORT || 9000;
-
+const UserRouter = require("./routes/user.routes");
 const cookieParser = require("cookie-parser");
 const cors= require("cors");
 const AuthRouter = require("./routes/auth.routes");
@@ -21,6 +21,7 @@ app.get("/", (req, res) => {
 
 
 app.use("/api/auth", AuthRouter);
+app.use("/api/user", UserRouter);
 app.listen(PORT, () => {
   console.log("Server is running on port " + PORT);
 });

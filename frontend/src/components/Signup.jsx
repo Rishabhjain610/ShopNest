@@ -7,9 +7,11 @@ import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../utils/firebase.js";
 import { useContext } from "react";
 import { AuthDataContext } from "../contextapi/AuthContext.jsx";
+import { UserDataContext } from "../contextapi/UserContext.jsx";
 import { toast } from "react-toastify";
 const Signup = () => {
   const { serverUrl } = useContext(AuthDataContext);
+  const { getCurrentUser } = useContext(UserDataContext);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -30,6 +32,7 @@ const Signup = () => {
       );
       console.log("Signup successful:", result.data);
       toast.success(result.data.message);
+      getCurrentUser(); // Fetch the current user data after signup
       navigate("/");
     } catch (error) {
       console.error("Signup error:", error);
@@ -53,6 +56,7 @@ const Signup = () => {
       );
       console.log("Google authentication successful:", result2.data);
       toast.success(result2.data.message);
+      getCurrentUser(); // Fetch the current user data after Google login
       navigate("/");
     } catch (error) {
       console.error("Google authentication error:", error);

@@ -5,11 +5,14 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useContext } from "react";
 import { toast } from "react-toastify";
-import {AuthDataContext} from "../contextapi/AuthContext.jsx";
+import { AuthDataContext } from "../contextapi/AuthContext.jsx";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../utils/firebase.js";
+import { UserDataContext } from "../contextapi/UserContext.jsx";
+
 const Login = () => {
   const { serverUrl } = useContext(AuthDataContext);
+  const { getCurrentUser } = useContext(UserDataContext);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -24,7 +27,8 @@ const Login = () => {
       });
       console.log("Login successful:", result.data);
       toast.success(result.data.message);
-      navigate('/');
+      getCurrentUser(); // Fetch the current user data after login
+      navigate("/");
       // Handle successful login (e.g., redirect or show a success message)
     } catch (error) {
       console.error("Login error:", error);
@@ -33,30 +37,31 @@ const Login = () => {
 
   const handleGoogleAuth = async (e) => {
     e.preventDefault();
-        try {
-          const result = await signInWithPopup(auth, provider);
-          const user = result.user;
-          const name = user.displayName;
-          const email = user.email;
-          const result2 = await axios.post(
-            `${serverUrl}/api/auth/googleLogin`,
-            { name, email },
-            {
-              withCredentials: true,
-            }
-          );
-          console.log("Google authentication successful:", result2.data);
-          toast.success(result2.data.message);
-          navigate("/");
-        } catch (error) {
-          console.error("Google authentication error:", error);
-          toast.error("Google authentication failed. Please try again.");
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      const name = user.displayName;
+      const email = user.email;
+      const result2 = await axios.post(
+        `${serverUrl}/api/auth/googleLogin`,
+        { name, email },
+        {
+          withCredentials: true,
         }
+      );
+      console.log("Google authentication successful:", result2.data);
+      toast.success(result2.data.message);
+      getCurrentUser(); // Fetch the current user data after Google login
+      navigate("/");
+    } catch (error) {
+      console.error("Google authentication error:", error);
+      toast.error("Google authentication failed. Please try again.");
+    }
     // Add Google auth logic here
   };
   const navigate = useNavigate();
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+    <div className="min-h-screen   flex items-center justify-center bg-gray-100 p-4">
       <div className="w-full max-w-sm bg-white rounded-lg shadow-lg border border-black p-6">
         <div className="text-center mb-6">
           <h2 className="text-2xl font-bold text-black">Login In</h2>
