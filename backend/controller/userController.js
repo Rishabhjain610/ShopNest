@@ -11,4 +11,22 @@ const getCurrentUser=async(req,res)=>{
 
   }
 };
-module.exports={ getCurrentUser };
+
+const getAdmin=async(req,res)=>{
+  try {
+    const adminEmail = req.adminEmail;
+    if (!adminEmail) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    res.status(200).json({ email: adminEmail, success: true, role: "admin" });
+
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+}
+
+
+
+
+
+module.exports={ getCurrentUser,getAdmin  };

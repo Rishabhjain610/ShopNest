@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const User = require("../model/user.model");
 const bcrypt = require("bcryptjs");
-const { createToken } = require("../utils/token");
+const { createToken, createToken1 } = require("../utils/token");
 const validator = require("validator");
 const register = async (req, res) => {
   try {
@@ -125,4 +125,35 @@ const logout = async (req, res) => {
     res.status(500).json({ message: "Logout Server Error" });
   }
 };
-module.exports = { register, Login, logout, googleLogin };
+const adminLogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (
+      email === process.env.ADMIN_EMAIL &&
+      password === process.env.ADMIN_PASSWORD
+    ) {
+      const token = await createToken1(email);
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "strict",
+        maxAge: 3 * 24 * 60 * 60 * 1000, // 3 days
+      });
+       return res.status(200).json({
+        message: "Admin login successful",
+        token: token,
+        success: true
+      }); 
+    } else {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Admin Login Server Error" });
+  }
+};
+
+
+
+
+
+module.exports = { register, Login, logout, googleLogin, adminLogin };

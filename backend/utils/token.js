@@ -12,4 +12,15 @@ const createToken=async(user)=>{
     
   }
 }
-module.exports={createToken};
+const createToken1=async(email)=>{
+  try {
+    const token=await jwt.sign({email},process.env.JWT_SECRET,{expiresIn:'3d'});
+    return token;
+    
+  } catch (error) {
+    console.error("Error creating token:", error);
+    
+    
+  }
+}
+module.exports={createToken,createToken1};
