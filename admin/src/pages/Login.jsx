@@ -4,9 +4,11 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { AuthDataContext } from "../context/AuthContext.jsx";
+import { UserDataContext } from "../context/UserContext.jsx";
 
 const Login = () => {
   const { serverUrl } = useContext(AuthDataContext);
+  const {getAdmin, setAdmin } = useContext(UserDataContext);
   const navigate = useNavigate(); // FIXED: Moved to top
 
   const [formData, setFormData] = useState({
@@ -27,6 +29,7 @@ const Login = () => {
       );
       console.log("Login successful:", result.data);
       toast.success(result.data.message || "Login successful!");
+      getAdmin();
       navigate("/");
     } catch (error) {
       console.error("Login error:", error);

@@ -1,10 +1,11 @@
-import React,{createContext,useState,useEffect} from 'react'
+import React,{createContext,useState,useEffect,useContext} from 'react'
 import axios from 'axios'
+import { AuthDataContext } from './AuthContext';
 export const UserDataContext = createContext();
 
 const UserContext = ({children}) => {
   const [admin,setAdmin] = useState(null);
-  const serverUrl="http://localhost:3000";
+  const {serverUrl}=useContext(AuthDataContext);
   const getAdmin=async()=>{
     try {
       const response = await axios.get(`${serverUrl}/api/user/getadmin`,{

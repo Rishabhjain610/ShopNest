@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useContext} from "react";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
@@ -8,14 +8,14 @@ import Lists from "./pages/Lists";
 import Add from "./pages/Add";
 import Orders from "./pages/Orders";
 import Login from "./pages/Login";
+import { UserDataContext } from "./context/UserContext.jsx";
+import Navbar from "./components/Navbar";
 const App = () => {
+  const { admin, setAdmin } = useContext(UserDataContext);
   return (
     <div>
       <ToastContainer
-        position="top-left"
-        hideProgressBar={true}
-        autoClose={1000}
-        theme="dark"
+        
         toastStyle={{
           background: "#18181b",
           color: "#fafafa",
@@ -24,13 +24,18 @@ const App = () => {
           boxShadow: "0 4px 24px rgba(0,0,0,0.5)",
         }}
       />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/lists" element={<Lists />} />
-        <Route path="/add" element={<Add />} />
-        <Route path="/orders" element={<Orders />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
+      <Navbar />
+      {admin ? (
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/lists" element={<Lists />} />
+          <Route path="/add" element={<Add />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      ) : (
+        <Login />
+      )}
     </div>
   );
 };
