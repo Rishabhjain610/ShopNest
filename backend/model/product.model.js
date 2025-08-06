@@ -51,8 +51,8 @@ const productSchema = new Schema({
     required: true,
   },
   date:{
-    type: Date,
-    default: Date.now,
+    type: Number,
+    required:true,
   },
   bestseller:{
     type: Boolean,
@@ -62,4 +62,9 @@ const productSchema = new Schema({
   timestamps: true,
   minimize: false, // Keeps empty objects in the database
 });
+
+
+
+
+
 module.exports = model("Product", productSchema);

@@ -1,80 +1,145 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FaHome, FaList, FaPlus, FaShoppingCart } from 'react-icons/fa';
+import { FaHome, FaList, FaPlus, FaShoppingCart, FaBars, FaTimes } from 'react-icons/fa';
 
 const Sidebar = () => {
   const { pathname } = useLocation();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleSidebar = () => setIsOpen(!isOpen);
 
   return (
     <>
-      {/* desktop / tablet */}
-      <aside className="hidden md:flex flex-col w-60 h-screen bg-white text-gray-800 border-r border-gray-200">
-        <div className="p-6 border-b border-gray-200">
-          <h1 className="text-2xl font-bold">Admin Panel</h1>
+      
+      <button
+        onClick={toggleSidebar}
+        className="fixed top-4 left-4 z-50 p-2 bg-gray-800 text-white rounded-lg shadow-lg hover:bg-gray-700 transition-colors md:hidden"
+      >
+        {isOpen ? <FaTimes className="text-xl" /> : <FaBars className="text-xl" />}
+      </button>
+
+      
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      {/* Desktop Sidebar */}
+      <aside className="hidden md:flex flex-col w-60 h-screen bg-black text-white border-r border-gray-700">
+        <div className="p-6 border-b border-gray-700">
+          <h1 className="text-2xl font-bold text-white">Admin Panel</h1>
         </div>
-        <nav className="flex-1 px-4 space-y-2">
+        <nav className="flex-1 px-4 py-4 space-y-2">
           <Link
             to="/"
-            className={`flex items-center p-2 rounded-lg transition ${
+            className={`flex items-center p-3 rounded-lg transition-colors ${
               pathname === '/' 
-                ? 'bg-gray-100 text-blue-600 border-l-4 border-blue-600' 
-                : 'hover:bg-gray-50'
+                ? 'bg-blue-600 text-white border-l-4 border-blue-400' 
+                : 'text-gray-300 hover:bg-gray-800 hover:text-white'
             }`}
           >
-            <FaHome className="mr-3" /> Dashboard
+            <FaHome className="mr-3 text-lg" /> Dashboard
           </Link>
           <Link
             to="/lists"
-            className={`flex items-center p-2 rounded-lg transition ${
+            className={`flex items-center p-3 rounded-lg transition-colors ${
               pathname === '/lists' 
-                ? 'bg-gray-100 text-blue-600 border-l-4 border-blue-600' 
-                : 'hover:bg-gray-50'
+                ? 'bg-blue-600 text-white border-l-4 border-blue-400' 
+                : 'text-gray-300 hover:bg-gray-800 hover:text-white'
             }`}
           >
-            <FaList className="mr-3" /> List Items
+            <FaList className="mr-3 text-lg" /> List Items
           </Link>
           <Link
             to="/add"
-            className={`flex items-center p-2 rounded-lg transition ${
+            className={`flex items-center p-3 rounded-lg transition-colors ${
               pathname === '/add' 
-                ? 'bg-gray-100 text-blue-600 border-l-4 border-blue-600' 
-                : 'hover:bg-gray-50'
+                ? 'bg-blue-600 text-white border-l-4 border-blue-400' 
+                : 'text-gray-300 hover:bg-gray-800 hover:text-white'
             }`}
           >
-            <FaPlus className="mr-3" /> Add Item
+            <FaPlus className="mr-3 text-lg" /> Add Item
           </Link>
           <Link
             to="/orders"
-            className={`flex items-center p-2 rounded-lg transition ${
+            className={`flex items-center p-3 rounded-lg transition-colors ${
               pathname === '/orders' 
-                ? 'bg-gray-100 text-blue-600 border-l-4 border-blue-600' 
-                : 'hover:bg-gray-50'
+                ? 'bg-blue-600 text-white border-l-4 border-blue-400' 
+                : 'text-gray-300 hover:bg-gray-800 hover:text-white'
             }`}
           >
-            <FaShoppingCart className="mr-3" /> View Orders
+            <FaShoppingCart className="mr-3 text-lg" /> View Orders
           </Link>
         </nav>
       </aside>
 
-      {/* mobile */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white shadow-md md:hidden flex justify-around border-t border-gray-200 py-2">
-        <Link to="/" className="flex flex-col items-center text-gray-600 hover:text-blue-600">
-          <FaHome className="text-xl" />
-          <span className="text-xs">Dashboard</span>
-        </Link>
-        <Link to="/lists" className="flex flex-col items-center text-gray-600 hover:text-blue-600">
-          <FaList className="text-xl" />
-          <span className="text-xs">Lists</span>
-        </Link>
-        <Link to="/add" className="flex flex-col items-center text-gray-600 hover:text-blue-600">
-          <FaPlus className="text-xl" />
-          <span className="text-xs">Add</span>
-        </Link>
-        <Link to="/orders" className="flex flex-col items-center text-gray-600 hover:text-blue-600">
-          <FaShoppingCart className="text-xl" />
-          <span className="text-xs">Orders</span>
-        </Link>
-      </nav>
+    
+      <aside
+        className={`fixed top-0 left-0 h-full w-64 bg-black text-white z-50 transform transition-transform duration-300 ease-in-out md:hidden ${
+          isOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        <div className="p-6 border-b border-gray-700">
+          <div className="flex items-center justify-between">
+            <h1 className="text-xl font-bold text-white">ShopNest</h1>
+            <button
+              onClick={toggleSidebar}
+              className="p-1 text-gray-400 hover:text-white"
+            >
+              <FaTimes className="text-lg" />
+            </button>
+          </div>
+        </div>
+        <nav className="px-4 py-4 space-y-2">
+          <Link
+            to="/"
+            onClick={() => setIsOpen(false)}
+            className={`flex items-center p-3 rounded-lg transition-colors ${
+              pathname === '/' 
+                ? 'bg-blue-600 text-white border-l-4 border-blue-400' 
+                : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+            }`}
+          >
+            <FaHome className="mr-3 text-lg" /> Dashboard
+          </Link>
+          <Link
+            to="/lists"
+            onClick={() => setIsOpen(false)}
+            className={`flex items-center p-3 rounded-lg transition-colors ${
+              pathname === '/lists' 
+                ? 'bg-blue-600 text-white border-l-4 border-blue-400' 
+                : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+            }`}
+          >
+            <FaList className="mr-3 text-lg" /> List Items
+          </Link>
+          <Link
+            to="/add"
+            onClick={() => setIsOpen(false)}
+            className={`flex items-center p-3 rounded-lg transition-colors ${
+              pathname === '/add' 
+                ? 'bg-blue-600 text-white border-l-4 border-blue-400' 
+                : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+            }`}
+          >
+            <FaPlus className="mr-3 text-lg" /> Add Item
+          </Link>
+          <Link
+            to="/orders"
+            onClick={() => setIsOpen(false)}
+            className={`flex items-center p-3 rounded-lg transition-colors ${
+              pathname === '/orders' 
+                ? 'bg-blue-600 text-white border-l-4 border-blue-400' 
+                : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+            }`}
+          >
+            <FaShoppingCart className="mr-3 text-lg" /> View Orders
+          </Link>
+        </nav>
+      </aside>
     </>
   );
 };
