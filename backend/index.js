@@ -6,6 +6,7 @@ const UserRouter = require("./routes/user.routes");
 const cookieParser = require("cookie-parser");
 const cors= require("cors");
 const AuthRouter = require("./routes/auth.routes");
+const ProductRouter = require("./routes/product.routes");
 ConnectDb();
 app.use(express.json());
 app.use(cookieParser());
@@ -22,6 +23,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", AuthRouter);
 app.use("/api/user", UserRouter);
+app.use("/api/product", ProductRouter);
 app.listen(PORT, () => {
   console.log("Server is running on port " + PORT);
 });
