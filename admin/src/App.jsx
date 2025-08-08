@@ -10,7 +10,9 @@ import Orders from "./pages/Orders";
 import Login from "./pages/Login";
 import { UserDataContext } from "./context/UserContext.jsx";
 import Navbar from "./components/Navbar";
+import Edit from "./pages/Editlisting.jsx";
 import Sidebar from "./components/Sidebar.jsx";
+import Editlisting from "./pages/Editlisting.jsx";
 const App = () => {
   const { admin, setAdmin } = useContext(UserDataContext);
   return (
@@ -34,7 +36,9 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/lists" element={<Lists />} />
           <Route path="/add" element={<Add />} />
+          <Route path="/edit/:id" element={<Editlisting />} />
           <Route path="/orders" element={<Orders />} />
+
           <Route path="/login" element={<Login />} />
         </Routes>
       ) : (
