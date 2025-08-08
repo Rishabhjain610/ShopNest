@@ -1,5 +1,5 @@
 const Product = require("../model/product.model");
-const uploadOnCloudinary = require("../utils/uploadOnCloudinary");
+const uploadOnCloudinary = require("../utils/cloudinary");
 
 const addProduct = async (req, res) => {
   try {
@@ -32,10 +32,12 @@ const addProduct = async (req, res) => {
     const newProduct = {
       name,
       description,
-      price: Number(price),
+      price: Number(price), //converts price to number
+      
       category,
       subcategory,
-      sizes: JSON.parse(sizes),
+      sizes: JSON.parse(sizes),//it will accept the string and convert it to an array
+      // Convert bestseller to boolean if it's a string
       bestseller: bestseller === "true" ? true : false,
       date: Date.now(),
       image1,
