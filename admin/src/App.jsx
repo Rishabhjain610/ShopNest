@@ -1,4 +1,4 @@
-import React,{useContext} from "react";
+import React, { useContext } from "react";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
@@ -16,7 +16,10 @@ const App = () => {
   return (
     <div>
       <ToastContainer
-        
+        position="top-left"
+        hideProgressBar={true}
+        autoClose={1000}
+        theme="dark"
         toastStyle={{
           background: "#18181b",
           color: "#fafafa",
@@ -27,7 +30,6 @@ const App = () => {
       />
       <Navbar />
       {admin ? (
-        
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/lists" element={<Lists />} />

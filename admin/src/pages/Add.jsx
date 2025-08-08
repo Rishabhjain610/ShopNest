@@ -1,8 +1,9 @@
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 import Sidebar from "../components/Sidebar";
 import { FaPlus, FaTimes, FaImage } from "react-icons/fa";
 import axios from "axios";
 import { AuthDataContext } from "../context/AuthContext.jsx";
+import { toast } from "react-toastify";
 const Add = () => {
   const [image1, setImage1] = useState(null);
   const [image2, setImage2] = useState(null);
@@ -44,13 +45,23 @@ const Add = () => {
       formData.append("description", description);
       formData.append("bestseller", bestseller);
       formData.append("sizes", JSON.stringify(sizes)); // Convert sizes array to JSON string
-      if (image1) formData.append("images", image1);
-      if (image2) formData.append("images", image2);
-      if (image3) formData.append("images", image3);
-      if (image4) formData.append("images", image4);
-      const result = await axios.post(`${serverUrl}/api/product/add`, formData, {withCredentials:true});
+      if (image1) formData.append("image1", image1);
+      if (image2) formData.append("image2", image2);
+      if (image3) formData.append("image3", image3);
+      if (image4) formData.append("image4", image4);
+      const result = await axios.post(
+        `${serverUrl}/api/product/add`,
+        formData,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data", // Add this
+          },
+        }
+      );
       console.log("Product added successfully:", result.data);
-      if(result.data.success) {
+      toast.success("Product added successfully!");
+      if (result.data.success) {
         // Reset form fields after successful submission
         setName("");
         setPrice("");
@@ -65,6 +76,7 @@ const Add = () => {
         setImage4(null);
       }
     } catch (error) {
+      toast.error("Error adding product. Please try again.");
       console.error("Error adding product:", error);
     }
   };
@@ -545,7 +557,6 @@ const Add = () => {
               <div className="pt-6 border-t border-blue-500">
                 <button
                   type="submit"
-                  onClick={handleAddProduct}
                   className="w-full py-4 px-6 rounded-lg font-semibold text-white transition-all duration-200 bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 transform hover:scale-[1.02] shadow-lg hover:shadow-2xl"
                 >
                   <span className="flex items-center justify-center">
