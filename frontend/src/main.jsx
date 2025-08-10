@@ -5,12 +5,15 @@ import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import AuthContext  from "./contextapi/AuthContext.jsx";
 import UserContext from "./contextapi/UserContext.jsx";
+import ShopContext from "./contextapi/ShopContext.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <AuthContext>
         <UserContext>
-          <App />
+          <ShopContext>
+            <App />
+          </ShopContext>
         </UserContext>
       </AuthContext>
     </BrowserRouter>

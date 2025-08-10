@@ -1,29 +1,39 @@
-
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FiSearch, FiShoppingCart, FiUser, FiMenu } from "react-icons/fi";
 import { FaStore } from "react-icons/fa";
 import { UserDataContext } from "../contextapi/UserContext";
 import { AuthDataContext } from "../contextapi/AuthContext.jsx";
 import { toast } from "react-toastify";
+import Language from "./Language.jsx";
 import axios from "axios";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const { userData, setUserData } = useContext(UserDataContext);
   const { serverUrl } = useContext(AuthDataContext);
+  const navigate = useNavigate();
+
+  const submitSearch = (e) => {
+    e.preventDefault();
+    const q = searchQuery.trim();
+    setMenuOpen(false);
+    setSearchOpen(false);
+    navigate(`/collection${q ? `?q=${encodeURIComponent(q)}` : ""}`);
+  };
 
   const handlelogout = async (e) => {
-    // Prevent the Link from navigating
     e.preventDefault();
     try {
       const response = await axios.get(`${serverUrl}/api/auth/logout`, {
         withCredentials: true,
       });
-
       if (response.status === 200) {
         toast.success("Logout successful");
-        setUserData(null); // Clear user data on logout
+        setUserData(null);
+        navigate("/login");
       } else {
         toast.error("Logout failed");
       }
@@ -33,9 +43,11 @@ const Navbar = () => {
     }
   };
 
+  const initial = (userData?.name || "U").slice(0, 1).toUpperCase();
+
   return (
-    <nav className="bg-gradient-to-r from-black via-gray-900 to-black text-white px-4 py-3 flex items-center justify-between shadow-xl border-b border-gray-800  fixed top-0 w-full z-50">
-      {/* Logo and Brand */}
+    <nav className="bg-gradient-to-r from-black via-gray-900 to-black text-white px-4 py-3 flex items-center justify-between shadow-xl border-b border-gray-800 fixed top-0 w-full z-50">
+      {/* Logo */}
       <div className="flex items-center gap-3">
         <div className="bg-gradient-to-br from-gray-700 via-gray-900 to-black rounded-full h-10 w-10 flex items-center justify-center shadow-lg border-2 border-white">
           <FaStore className="text-white text-2xl drop-shadow-lg" />
@@ -48,7 +60,7 @@ const Navbar = () => {
         </Link>
       </div>
 
-      {/* Navigation Links (Desktop) - Hidden on screens smaller than lg */}
+      {/* Links (desktop) */}
       <div className="hidden lg:flex items-center gap-6 text-base">
         <Link
           to="/"
@@ -62,8 +74,9 @@ const Navbar = () => {
         >
           About
         </Link>
+        {/* fixed to /collection */}
         <Link
-          to="/collections"
+          to="/collection"
           className="hover:bg-white hover:text-black px-4 py-2 rounded-full transition-colors duration-200 font-semibold"
         >
           Collections
@@ -80,95 +93,168 @@ const Navbar = () => {
         >
           Contact
         </Link>
+        <span className="">
+          <Language />
+        </span>
       </div>
 
-      {/* Right-side Icons */}
-      <div className="flex items-center gap-4">
-        {/* Search Bar - Hidden on small screens */}
-        <div className="relative hidden sm:flex">
+      
+      <div className="flex items-center gap-3 sm:gap-4">
+        
+        <form onSubmit={submitSearch} className="relative hidden sm:flex">
           <input
             type="text"
-            placeholder="Search..."
-            className="w-36 sm:w-48 px-4 py-2 rounded-full bg-gray-900 text-white border border-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white transition-all duration-200 shadow-inner"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search products..."
+            className="w-36 sm:w-56 md:w-72 lg:w-80 px-4 py-2 rounded-full bg-gray-900 text-white border border-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white transition-all duration-200 shadow-inner"
+            aria-label="Search"
           />
-          <FiSearch className="absolute right-3 top-2.5 text-white text-xl" />
-        </div>
+          <button
+            type="submit"
+            className="absolute right-2 top-1.5 p-1.5 rounded-full hover:bg-white/10"
+          >
+            <FiSearch className="text-white text-xl" />
+          </button>
+        </form>
 
-        {/* Cart Icon */}
-        <Link to="/cart" className="group">
+        
+        <Link to="/cart" className="group" aria-label="Cart">
           <FiShoppingCart className="text-2xl text-white group-hover:text-gray-300 transition-colors duration-200" />
         </Link>
 
-        {/* Profile/Login Button */}
+        
         <div className="hidden lg:flex">
-            <Link
+          <Link
             to={userData ? "/profile" : "/login"}
             className="flex items-center gap-2 rounded-full px-3 py-1 transition-colors duration-200 border border-gray-700 bg-gray-900 hover:bg-gray-800 shadow-sm"
-            >
+          >
             {!userData ? (
-                <>
+              <>
                 <span className="flex items-center justify-center h-8 w-8 rounded-full bg-gray-700 text-white font-bold text-lg border border-gray-500">
-                    <FiUser className="text-xl" />
+                  <FiUser className="text-xl" />
                 </span>
                 <span className="font-semibold text-white pr-2">Login</span>
-                </>
+              </>
             ) : (
-                <>
+              <>
                 <span className="flex items-center justify-center h-8 w-8 rounded-full bg-white text-black font-bold text-lg border border-gray-500">
-                    {userData.name.slice(0, 1).toUpperCase()}
+                  {initial}
                 </span>
                 <button
-                    className="font-semibold text-white pr-2"
-                    onClick={handlelogout}
+                  className="font-semibold text-white pr-2"
+                  onClick={handlelogout}
                 >
-                    Logout
+                  Logout
                 </button>
-                </>
+              </>
             )}
-            </Link>
+          </Link>
         </div>
 
-
-        {/* Mobile Menu Button - Visible only on screens smaller than lg */}
+       
         <button
-          className="lg:hidden ml-2 focus:outline-none"
+          className="sm:hidden ml-1 focus:outline-none"
+          onClick={() => setSearchOpen((v) => !v)}
+          aria-label="Open search"
+        >
+          <FiSearch className="text-2xl text-white" />
+        </button>
+
+       
+        <button
+          className="lg:hidden ml-1 focus:outline-none"
           onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Open menu"
         >
           <FiMenu className="text-2xl text-white" />
         </button>
       </div>
 
-      {/* Mobile Menu Dropdown */}
+      
+      {searchOpen && (
+        <div className="absolute top-full left-0 w-full bg-black/95 backdrop-blur-sm px-4 py-3 border-b border-gray-800 sm:hidden">
+          <form onSubmit={submitSearch} className="flex items-center gap-2">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search products..."
+              className="flex-1 px-4 py-2 rounded-full bg-gray-900 text-white border border-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white transition"
+              aria-label="Search mobile"
+            />
+            <button
+              type="submit"
+              className="px-4 py-2 rounded-full bg-white text-black font-semibold hover:bg-gray-200 transition"
+            >
+              Search
+            </button>
+          </form>
+        </div>
+      )}
+
+      
       {menuOpen && (
-        <div className="absolute top-full left-0 w-full bg-black bg-opacity-95 flex flex-col items-center gap-4 py-4 z-50 lg:hidden">
-          <Link to="/" className="text-white text-lg" onClick={() => setMenuOpen(false)}>Home</Link>
-          <Link to="/about" className="text-white text-lg" onClick={() => setMenuOpen(false)}>About</Link>
-          <Link to="/collections" className="text-white text-lg" onClick={() => setMenuOpen(false)}>Collections</Link>
-          <Link to="/orders" className="text-white text-lg" onClick={() => setMenuOpen(false)}>Orders</Link>
-          <Link to="/contact" className="text-white text-lg" onClick={() => setMenuOpen(false)}>Contact</Link>
-          <div className="w-full border-t border-gray-700 my-2"></div>
-          {/* Profile/Login link for mobile dropdown */}
+        <div className="absolute top-full left-0 w-full bg-black bg-opacity-95 flex flex-col items-center gap-4 py-4 z-50 lg:hidden border-b border-gray-800">
+          <Link
+            to="/"
+            className="text-white text-lg"
+            onClick={() => setMenuOpen(false)}
+          >
+            Home
+          </Link>
+          <Link
+            to="/about"
+            className="text-white text-lg"
+            onClick={() => setMenuOpen(false)}
+          >
+            About
+          </Link>
+          <Link
+            to="/collection"
+            className="text-white text-lg"
+            onClick={() => setMenuOpen(false)}
+          >
+            Collections
+          </Link>
+          <Link
+            to="/orders"
+            className="text-white text-lg"
+            onClick={() => setMenuOpen(false)}
+          >
+            Orders
+          </Link>
+          <Link
+            to="/contact"
+            className="text-white text-lg"
+            onClick={() => setMenuOpen(false)}
+          >
+            Contact
+          </Link>
+           
+          
+        
+
+          <div className="w-full border-t border-gray-700 my-2" />
           <Link
             to={userData ? "/profile" : "/login"}
             className="flex items-center gap-3 text-white text-lg"
             onClick={(e) => {
-                if (userData) {
-                    handlelogout(e);
-                }
-                setMenuOpen(false);
+              if (userData) handlelogout(e);
+              setMenuOpen(false);
             }}
           >
             {!userData ? (
-                <>
-                    <FiUser /> Login
-                </>
+              <>
+                <FiUser /> Login
+              </>
             ) : (
-                <>
-                    <span className="flex items-center justify-center h-8 w-8 rounded-full bg-white text-black font-bold text-lg">
-                        {userData.name.slice(0, 1).toUpperCase()}
-                    </span>
-                    <span>Logout</span>
-                </>
+              <>
+                <span className="flex items-center justify-center h-8 w-8 rounded-full bg-white text-black font-bold text-lg">
+                  {initial}
+                </span>
+                <span>Logout</span>
+              </>
             )}
           </Link>
         </div>

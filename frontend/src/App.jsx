@@ -1,18 +1,24 @@
 import React, { useContext } from "react";
 import "./App.css";
-import { Routes, Route,Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
+import About from "./components/About.jsx";
+import Collection from "./components/Collection.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "./components/Navbar";
+import Contact from "./components/Contact.jsx";
+import Product from "./components/Product.jsx";
 import { UserDataContext } from "./contextapi/UserContext.jsx";
 import { AuthDataContext } from "./contextapi/AuthContext.jsx";
+import Language from "./components/Language.jsx";
 const App = () => {
   const { userData } = useContext(UserDataContext);
   return (
     <>
+   
       <ToastContainer
         position="top-left"
         hideProgressBar={true}
@@ -30,16 +36,34 @@ const App = () => {
       {userData && <Navbar />}
 
       <Routes>
-        <Route path="/" element={userData?<Home />:<Navigate to="/login" />} />
-        <Route 
-          path="/login" 
-          element={userData ? <Navigate to="/" /> : <Login />} 
+        <Route
+          path="/"
+          element={userData ? <Home /> : <Navigate to="/login" />}
         />
-        
-        
-        <Route 
-          path="/signup" 
-          element={userData ? <Navigate to="/" /> : <Signup />} 
+        <Route
+          path="/login"
+          element={userData ? <Navigate to="/" /> : <Login />}
+        />
+
+        <Route
+          path="/signup"
+          element={userData ? <Navigate to="/" /> : <Signup />}
+        />
+        <Route
+          path="/about"
+          element={userData ? <About /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/collection"
+          element={userData ? <Collection /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/product"
+          element={userData ? <Product /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/contact"
+          element={userData ? <Contact /> : <Navigate to="/login" />}
         />
       </Routes>
     </>

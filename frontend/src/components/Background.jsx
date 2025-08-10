@@ -2,7 +2,6 @@
 import React from 'react';
 
 const Background = ({ heroCount }) => {
-  // Sample shopping/e-commerce images
   const images = [
     'https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
     'https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
@@ -11,18 +10,15 @@ const Background = ({ heroCount }) => {
   ];
 
   return (
-    <div className="absolute inset-0 w-full h-full">
+    <div className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden="true">
       {images.map((image, index) => (
         <div
           key={index}
           className={`absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat transition-opacity duration-1000 ease-in-out ${
             heroCount === index ? 'opacity-60' : 'opacity-0'
           }`}
-          style={{
-            backgroundImage: `url(${image})`
-          }}
+          style={{ backgroundImage: `url(${image})` }}
         >
-          {/* Dark overlay for better text readability */}
           <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-black/50"></div>
         </div>
       ))}
