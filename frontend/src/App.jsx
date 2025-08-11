@@ -14,6 +14,7 @@ import Product from "./components/Product.jsx";
 import { UserDataContext } from "./contextapi/UserContext.jsx";
 import { AuthDataContext } from "./contextapi/AuthContext.jsx";
 import Language from "./components/Language.jsx";
+import ProductDetailspage from "./components/ProductDetailspage.jsx";
 import CollectionPage from "./components/CollectionPage.jsx";
 const App = () => {
   const { userData } = useContext(UserDataContext);
@@ -65,6 +66,10 @@ const App = () => {
         <Route
           path="/contact"
           element={userData ? <Contact /> : <Navigate to="/login" />}
+        />
+         <Route
+          path="/productDetails"
+          element={userData ? <ProductDetailspage /> : <Navigate to="/login" />}
         />
       </Routes>
     </>

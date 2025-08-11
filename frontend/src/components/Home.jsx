@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import Hero from './Hero';
 import Background from './Background';
 import Product from './Product';
-
+import Ourpolicy from './Ourpolicy';
+import Footer from './Footer';
 const Home = () => {
   const [heroCount, setHeroCount] = useState(0);
 
@@ -35,6 +36,8 @@ const Home = () => {
       </div>
     </div>
     <Product />
+    <Ourpolicy/>
+    <Footer/>
     </>
    
   );

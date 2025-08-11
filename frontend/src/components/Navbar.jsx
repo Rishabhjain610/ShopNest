@@ -4,6 +4,7 @@ import { FiSearch, FiShoppingCart, FiUser, FiMenu } from "react-icons/fi";
 import { FaStore } from "react-icons/fa";
 import { UserDataContext } from "../contextapi/UserContext";
 import { AuthDataContext } from "../contextapi/AuthContext.jsx";
+import { ShopDataContext } from "../contextapi/ShopContext";
 import { toast } from "react-toastify";
 import Language from "./Language.jsx";
 import axios from "axios";
@@ -11,18 +12,13 @@ import axios from "axios";
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+
   const { userData, setUserData } = useContext(UserDataContext);
   const { serverUrl } = useContext(AuthDataContext);
+  const { search, setSearch, showSearch, setShowSearch } = useContext(ShopDataContext);
   const navigate = useNavigate();
 
-  const submitSearch = (e) => {
-    e.preventDefault();
-    const q = searchQuery.trim();
-    setMenuOpen(false);
-    setSearchOpen(false);
-    navigate(`/collection${q ? `?q=${encodeURIComponent(q)}` : ""}`);
-  };
+  
 
   const handlelogout = async (e) => {
     e.preventDefault();
@@ -101,14 +97,15 @@ const Navbar = () => {
       
       <div className="flex items-center gap-3 sm:gap-4">
         
-        <form onSubmit={submitSearch} className="relative hidden sm:flex">
+        <form  className="relative hidden sm:flex">
           <input
             type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            value={search}
+            onChange={(e) => { setSearch(e.target.value); navigate('/collection'); }}
             placeholder="Search products..."
             className="w-36 sm:w-56 md:w-72 lg:w-80 px-4 py-2 rounded-full bg-gray-900 text-white border border-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white transition-all duration-200 shadow-inner"
             aria-label="Search"
+            
           />
           <button
             type="submit"
