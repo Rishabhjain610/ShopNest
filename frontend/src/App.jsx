@@ -68,7 +68,7 @@ const App = () => {
           element={userData ? <Contact /> : <Navigate to="/login" />}
         />
          <Route
-          path="/productDetails"
+          path="/productDetails/:id"
           element={userData ? <ProductDetailspage /> : <Navigate to="/login" />}
         />
       </Routes>

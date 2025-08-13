@@ -8,7 +8,7 @@ const Card = ({ name, image, id, price }) => {
   const { currency } = useContext(ShopDataContext);
 
   return (
-    <Link to={`/product/${id}`} className="block">
+    <Link to={`/productDetails/${id}`} className="block">
       <div className="relative bg-gradient-to-br from-black via-gray-900 to-black rounded-3xl shadow-2xl transition-all duration-300 overflow-hidden border border-gray-800">
         {/* Image Container */}
         <div className="relative overflow-hidden rounded-t-3xl">
