@@ -113,7 +113,7 @@ const CollectionPage = () => {
     (priceRange[0] !== 0 || priceRange[1] !== 10000 ? 1 : 0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white pt-18">
       {/* Mobile Filter Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 z-50 w-80 bg-gradient-to-b from-gray-800 to-gray-900 backdrop-blur-xl border-r border-gray-700 transform ${

@@ -6,6 +6,7 @@ const ShopContext = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
+  const [cartItem, setCartItem] = useState({});
   const { serverUrl } = useContext(AuthDataContext);
   const currency = "₹";
   const delivery_fees = 40;
@@ -18,6 +19,24 @@ const ShopContext = ({ children }) => {
       console.error("Error fetching products:", error);
     }
   };
+  const addTocart = async (id, size) => {
+    if (!size) {
+      return;
+    }
+    let cartData = structuredClone(cartItem);
+    if (cartData[id][size]) {
+      if (cartData[id][size]) {
+        cartData[id][size].quantity += 1;
+      } else {
+        cartData[id][size] = 1;
+      }
+    } else {
+      cartData[id] = {};
+      cartData[id][size] = 1;
+    }
+    setCartItem(cartData);
+  };
+
   useEffect(() => {
     getproducts();
   }, []);
@@ -32,7 +51,7 @@ const ShopContext = ({ children }) => {
     search,
     setSearch,
     showSearch,
-    setShowSearch
+    setShowSearch,
   };
   return (
     <div>
