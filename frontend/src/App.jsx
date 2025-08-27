@@ -17,6 +17,7 @@ import Language from "./components/Language.jsx";
 import ProductDetailspage from "./components/ProductDetailspage.jsx";
 import CollectionPage from "./components/CollectionPage.jsx";
 import Checkout from "./components/Checkout.jsx";
+import Order from "./components/Order.jsx";
 import Cart from "./components/Cart.jsx";
 const App = () => {
   const { userData } = useContext(UserDataContext);
@@ -80,6 +81,10 @@ const App = () => {
         <Route
           path="/checkout"
           element={userData ? <Checkout /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/order"
+          element={userData ? <Order /> : <Navigate to="/login" />}
         />
       </Routes>
     </>

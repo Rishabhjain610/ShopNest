@@ -8,6 +8,7 @@ const cors= require("cors");
 const AuthRouter = require("./routes/auth.routes");
 const ProductRouter = require("./routes/product.routes");
 const CartRouter = require("./routes/cart.route");
+const OrderRouter = require("./routes/order.routes");
 ConnectDb();
 app.use(express.json());
 app.use(cookieParser());
@@ -26,6 +27,7 @@ app.use("/api/auth", AuthRouter);
 app.use("/api/user", UserRouter);
 app.use("/api/product", ProductRouter);
 app.use("/api/cart", CartRouter);
+app.use("/api/order", OrderRouter);
 app.listen(PORT, () => {
   console.log("Server is running on port " + PORT);
 });
