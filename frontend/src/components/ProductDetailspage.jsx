@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import RelatedProducts from "./RelatedProducts";
 const ProductDetailspage = () => {
   const { id } = useParams();
-  const { products, currency } = useContext(ShopDataContext);
+  const { products, currency,addTocart } = useContext(ShopDataContext);
   const [image, setImage] = useState("");
   const [image1, setImage1] = useState("");
   const [image2, setImage2] = useState("");
@@ -118,7 +118,9 @@ const ProductDetailspage = () => {
                 )}
               </div>
             )}
-            <button className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40">
+            <button className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40"
+            onClick={() => addTocart(productData._id, selectedSize)}
+            >
               Add to Cart
             </button>
           </div>

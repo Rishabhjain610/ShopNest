@@ -16,6 +16,8 @@ import { AuthDataContext } from "./contextapi/AuthContext.jsx";
 import Language from "./components/Language.jsx";
 import ProductDetailspage from "./components/ProductDetailspage.jsx";
 import CollectionPage from "./components/CollectionPage.jsx";
+import Checkout from "./components/Checkout.jsx";
+import Cart from "./components/Cart.jsx";
 const App = () => {
   const { userData } = useContext(UserDataContext);
   return (
@@ -70,6 +72,14 @@ const App = () => {
          <Route
           path="/productDetails/:id"
           element={userData ? <ProductDetailspage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/cart"
+          element={userData ? <Cart /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/checkout"
+          element={userData ? <Checkout /> : <Navigate to="/login" />}
         />
       </Routes>
     </>

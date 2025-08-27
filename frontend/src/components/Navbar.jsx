@@ -15,10 +15,9 @@ const Navbar = () => {
 
   const { userData, setUserData } = useContext(UserDataContext);
   const { serverUrl } = useContext(AuthDataContext);
-  const { search, setSearch, showSearch, setShowSearch } = useContext(ShopDataContext);
+  const { search, setSearch, showSearch, setShowSearch, getcartcount } =
+    useContext(ShopDataContext);
   const navigate = useNavigate();
-
-  
 
   const handlelogout = async (e) => {
     e.preventDefault();
@@ -94,18 +93,18 @@ const Navbar = () => {
         </span>
       </div>
 
-      
       <div className="flex items-center gap-3 sm:gap-4">
-        
-        <form  className="relative hidden sm:flex">
+        <form className="relative hidden sm:flex">
           <input
             type="text"
             value={search}
-            onChange={(e) => { setSearch(e.target.value); navigate('/collection'); }}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              navigate("/collection");
+            }}
             placeholder="Search products..."
             className="w-36 sm:w-56 md:w-72 lg:w-80 px-4 py-2 rounded-full bg-gray-900 text-white border border-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white transition-all duration-200 shadow-inner"
             aria-label="Search"
-            
           />
           <button
             type="submit"
@@ -115,12 +114,15 @@ const Navbar = () => {
           </button>
         </form>
 
-        
-        <Link to="/cart" className="group" aria-label="Cart">
+        <Link to="/cart" className="relative group" aria-label="Cart">
           <FiShoppingCart className="text-2xl text-white group-hover:text-gray-300 transition-colors duration-200" />
+          {getcartcount() > 0 && (
+            <span className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs font-bold rounded-full px-2 py-0.5 shadow-lg">
+              {getcartcount()}
+            </span>
+          )}
         </Link>
 
-        
         <div className="hidden lg:flex">
           <Link
             to={userData ? "/profile" : "/login"}
@@ -149,7 +151,6 @@ const Navbar = () => {
           </Link>
         </div>
 
-       
         <button
           className="sm:hidden ml-1 focus:outline-none"
           onClick={() => setSearchOpen((v) => !v)}
@@ -158,7 +159,6 @@ const Navbar = () => {
           <FiSearch className="text-2xl text-white" />
         </button>
 
-       
         <button
           className="lg:hidden ml-1 focus:outline-none"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -168,7 +168,6 @@ const Navbar = () => {
         </button>
       </div>
 
-      
       {searchOpen && (
         <div className="absolute top-full left-0 w-full bg-black/95 backdrop-blur-sm px-4 py-3 border-b border-gray-800 sm:hidden">
           <form onSubmit={submitSearch} className="flex items-center gap-2">
@@ -190,7 +189,6 @@ const Navbar = () => {
         </div>
       )}
 
-      
       {menuOpen && (
         <div className="absolute top-full left-0 w-full bg-black bg-opacity-95 flex flex-col items-center gap-4 py-4 z-50 lg:hidden border-b border-gray-800">
           <Link
@@ -228,9 +226,6 @@ const Navbar = () => {
           >
             Contact
           </Link>
-           
-          
-        
 
           <div className="w-full border-t border-gray-700 my-2" />
           <Link
