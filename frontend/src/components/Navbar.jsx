@@ -213,7 +213,7 @@ const Navbar = () => {
             Collections
           </Link>
           <Link
-            to="/orders"
+            to="/order"
             className="text-white text-lg"
             onClick={() => setMenuOpen(false)}
           >
