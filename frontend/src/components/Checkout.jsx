@@ -4,12 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { FaMoneyBillWave } from "react-icons/fa";
 import { SiRazorpay } from "react-icons/si";
 import { AuthDataContext } from "../contextapi/AuthContext";
+
 import axios from "axios";
 const Checkout = () => {
-  const { getCartAmount, currency, cartItem,setCartItem, products } =
+  const { getCartAmount, currency, cartItem, setCartItem, products } =
     useContext(ShopDataContext);
   const { serverUrl } = useContext(AuthDataContext);
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -20,7 +21,6 @@ const Checkout = () => {
     pincode: "",
     country: "",
     phone: "",
-    
   });
   const [paymentMethod, setPaymentMethod] = useState("cod");
 
@@ -28,7 +28,21 @@ const Checkout = () => {
   const cartTotal = getCartAmount();
   const deliveryCharge = 40;
   const grandTotal = cartTotal + deliveryCharge;
-
+  const initPay = (order) => {
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+      amount: order.amount,
+      currency: "INR",
+      name: "Order Payment",
+      order_id: order.id,
+      receipt: order.receipt,
+      handler: async (response) => {
+        console.log(response);
+      },
+    };
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  };
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -64,6 +78,7 @@ const Checkout = () => {
       switch (paymentMethod) {
         case "cod": {
           try {
+            
             const result = await axios.post(
               `${serverUrl}/api/order/checkout`,
               orderData,
@@ -71,14 +86,30 @@ const Checkout = () => {
             );
             console.log(result.data);
             console.log(cartItem);
-            setCartItem({})
+            setCartItem({});
             navigate("/order");
           } catch (error) {
             console.error("Order placement failed:", error);
           }
           break;
         }
-
+        case "razorpay": {
+          try {
+            console.log("Razorpay order data:", orderData);
+            const result = await axios.post(
+              `${serverUrl}/api/order/razorpay`,
+              orderData,
+              { withCredentials: true }
+            );
+            if (result.data.success) {
+              initPay(result.data.data);
+            }
+            setCartItem({});
+            
+          } catch (error) {
+            console.error("Razorpay payment failed:", error);
+          }
+        }
         default:
           break;
       }
