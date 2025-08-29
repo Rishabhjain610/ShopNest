@@ -38,6 +38,21 @@ const Checkout = () => {
       receipt: order.receipt,
       handler: async (response) => {
         console.log(response);
+        const result = await axios.post(
+          `${serverUrl}/api/order/verify`,
+          {
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_order_id: response.razorpay_order_id,
+          },
+          {
+            withCredentials: true,
+          }
+        );
+        if (result.data.success) {
+          console.log("Payment verified successfully");
+          setCartItem({});
+          navigate("/order");
+        }
       },
     };
     const rzp = new window.Razorpay(options);
@@ -72,13 +87,13 @@ const Checkout = () => {
       let orderData = {
         address: form,
         items: orderItems,
+        phone: form.phone,
         amount: getCartAmount() + deliveryCharge,
       };
 
       switch (paymentMethod) {
         case "cod": {
           try {
-            
             const result = await axios.post(
               `${serverUrl}/api/order/checkout`,
               orderData,
@@ -104,8 +119,6 @@ const Checkout = () => {
             if (result.data.success) {
               initPay(result.data.data);
             }
-            setCartItem({});
-            
           } catch (error) {
             console.error("Razorpay payment failed:", error);
           }

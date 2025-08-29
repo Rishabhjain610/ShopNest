@@ -4,7 +4,10 @@ const razorpay = require("razorpay");
 const dotenv = require("dotenv");
 
 dotenv.config();
+const twilio = require('twilio');
+const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
+    
 const razorpayInstance = new razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_KEY_SECRET,
@@ -25,6 +28,11 @@ const PlaceOrder = async (req, res) => {
     };
     const newOrder = await Order.create(orderSchema);
     await User.findByIdAndUpdate(userId, { cartData: {} });
+    await twilioClient.messages.create({
+      from: 'whatsapp:+14155238886',
+      to: 'whatsapp:+918433943227',
+      body: `Order placed! Order ID: ${newOrder._id}\nAmount: ₹${amount}\nThank you for shopping with us! Mode of payment ${newOrder.paymentMethod}`
+    });
     res.status(201).json({
       success: true,
       message: "Order placed successfully",
@@ -94,7 +102,7 @@ const updateStatus = async (req, res) => {
 
 const placeOrderRazorpay = async (req, res) => {
   try {
-    const { items, amount, address } = req.body;
+    const { items, amount, address,phone } = req.body;
     const userId = req.userId;
     const orderSchema = {
       items,
@@ -112,21 +120,13 @@ const placeOrderRazorpay = async (req, res) => {
       receipt: newOrder._id.toString(),
     };
     console.log("Razorpay options:",options)
-    // await razorpayInstance.orders.create(options, (error, order) => {
-    //   if (error) {
-    //     return res.status(500).json({
-    //       success: false,
-    //       message: "Internal server error",
-    //       error: error.message,
-    //     });
-    //   }
-    //   res.status(201).json({
-    //     success: true,
-    //     message: "Order placed successfully",
-    //     data: order,
-    //   });
-    // });
+  
     const order = await razorpayInstance.orders.create(options);
+    await twilioClient.messages.create({
+      from: 'whatsapp:+14155238886',
+      to: 'whatsapp:+918433943227',
+      body: `Order placed! Order ID: ${newOrder._id}\nAmount: ₹${amount}\nThank you for shopping with us! Mode of payment ${newOrder.paymentMethod}`
+    });
     res.status(201).json({
       success: true,
       message: "Order placed successfully",
@@ -142,10 +142,54 @@ const placeOrderRazorpay = async (req, res) => {
   }
 };
 
+
+
+
+
+
+
+
+const verifyRazorpay=async(req,res)=>{
+  try {
+    const userId=req.userId;
+    const { razorpay_order_id,razorpay_payment_id } = req.body;
+    const result = await razorpayInstance.payments.fetch(razorpay_payment_id);
+    if (result.status === "captured" || result.status === "paid") {
+      await Order.findByIdAndUpdate(result.receipt, { payment: true });
+      await User.findByIdAndUpdate(userId, { cartData: {} });
+
+      return res.status(200).json({
+        success: true,
+        message: "Payment verified successfully",
+      });
+    }
+    res.status(400).json({
+      success: false,
+      message: "Payment verification failed",
+    });
+  } catch (error) {
+    console.error("Razorpay payment verification failed:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
+
+
+
+
+
+
+
+
+
 module.exports = {
   PlaceOrder,
   userOrders,
   allOrders,
   updateStatus,
   placeOrderRazorpay,
+  verifyRazorpay
 };
