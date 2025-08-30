@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { AuthDataContext } from "./AuthContext";
 import { UserDataContext } from "./UserContext";
 import axios from "axios";
-
+import { toast } from "react-toastify";
 export const ShopDataContext = createContext();
 const ShopContext = ({ children }) => {
   const [products, setProducts] = useState([]);
@@ -52,7 +52,7 @@ const ShopContext = ({ children }) => {
     // Update the cart state with the new cart data
     setCartItem(cartData);
     // Log the updated cart for debugging
-    console.log(cartData);
+   
     if (userData) {
       try {
         const response = await axios.post(
@@ -65,7 +65,7 @@ const ShopContext = ({ children }) => {
             withCredentials: true,
           }
         );
-        console.log("Product added to cart:", response.data);
+        toast.success("Product added to cart" );
       } catch (error) {
         console.error("Error adding product to cart:", error);
       }

@@ -48,7 +48,7 @@ const Navbar = () => {
           <FaStore className="text-white text-2xl drop-shadow-lg" />
         </div>
         <Link
-          to="/"
+          to="/home"
           className="font-extrabold text-2xl tracking-widest text-white hover:text-gray-300 transition-colors duration-200"
         >
           ShopNest
@@ -58,7 +58,7 @@ const Navbar = () => {
       {/* Links (desktop) */}
       <div className="hidden lg:flex items-center gap-6 text-base">
         <Link
-          to="/"
+          to="/home"
           className="hover:bg-white hover:text-black px-4 py-2 rounded-full transition-colors duration-200 font-semibold"
         >
           Home
@@ -192,7 +192,7 @@ const Navbar = () => {
       {menuOpen && (
         <div className="absolute top-full left-0 w-full bg-black bg-opacity-95 flex flex-col items-center gap-4 py-4 z-50 lg:hidden border-b border-gray-800">
           <Link
-            to="/"
+            to="/home"
             className="text-white text-lg"
             onClick={() => setMenuOpen(false)}
           >

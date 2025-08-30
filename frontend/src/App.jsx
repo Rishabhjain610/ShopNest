@@ -19,6 +19,7 @@ import CollectionPage from "./components/CollectionPage.jsx";
 import Checkout from "./components/Checkout.jsx";
 import Order from "./components/Order.jsx";
 import Cart from "./components/Cart.jsx";
+import Voicebot from "./components/Voicebot.jsx";
 const App = () => {
   const { userData } = useContext(UserDataContext);
   return (
@@ -42,17 +43,17 @@ const App = () => {
 
       <Routes>
         <Route
-          path="/"
+          path="/home"
           element={userData ? <Home /> : <Navigate to="/login" />}
         />
         <Route
           path="/login"
-          element={userData ? <Navigate to="/" /> : <Login />}
+          element={userData ? <Navigate to="/home" /> : <Login />}
         />
 
         <Route
           path="/signup"
-          element={userData ? <Navigate to="/" /> : <Signup />}
+          element={userData ? <Navigate to="/home" /> : <Signup />}
         />
         <Route
           path="/about"
@@ -87,6 +88,7 @@ const App = () => {
           element={userData ? <Order /> : <Navigate to="/login" />}
         />
       </Routes>
+      {userData && <Voicebot />}
     </>
   );
 };

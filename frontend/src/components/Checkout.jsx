@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FaMoneyBillWave } from "react-icons/fa";
 import { SiRazorpay } from "react-icons/si";
 import { AuthDataContext } from "../contextapi/AuthContext";
-
+import { toast } from "react-toastify";
 import axios from "axios";
 const Checkout = () => {
   const { getCartAmount, currency, cartItem, setCartItem, products } =
@@ -51,6 +51,7 @@ const Checkout = () => {
         if (result.data.success) {
           console.log("Payment verified successfully");
           setCartItem({});
+          toast.success("Order Placed Successfully");
           navigate("/order");
         }
       },
@@ -102,6 +103,7 @@ const Checkout = () => {
             console.log(result.data);
             console.log(cartItem);
             setCartItem({});
+            toast.success("Order Placed Successfully");
             navigate("/order");
           } catch (error) {
             console.error("Order placement failed:", error);
