@@ -9,7 +9,7 @@ const AuthRouter = require("./routes/auth.routes");
 const ProductRouter = require("./routes/product.routes");
 const CartRouter = require("./routes/cart.route");
 const OrderRouter = require("./routes/order.routes");
-const VoiceRouter = require("./routes/voice.routes");
+const ChatRouter = require("./routes/Chatbot.routes");
 ConnectDb();
 app.use(express.json());
 app.use(cookieParser());
@@ -29,7 +29,7 @@ app.use("/api/user", UserRouter);
 app.use("/api/product", ProductRouter);
 app.use("/api/cart", CartRouter);
 app.use("/api/order", OrderRouter);
-app.use("/api/voice", VoiceRouter);
+app.use("/api/chatbot", ChatRouter);
 app.listen(PORT, () => {
   console.log("Server is running on port " + PORT);
 });

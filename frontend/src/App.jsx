@@ -19,7 +19,7 @@ import CollectionPage from "./components/CollectionPage.jsx";
 import Checkout from "./components/Checkout.jsx";
 import Order from "./components/Order.jsx";
 import Cart from "./components/Cart.jsx";
-import Voicebot from "./components/Voicebot.jsx";
+import Chatbot from "./components/Chatbot.jsx";
 const App = () => {
   const { userData } = useContext(UserDataContext);
   return (
@@ -88,7 +88,7 @@ const App = () => {
           element={userData ? <Order /> : <Navigate to="/login" />}
         />
       </Routes>
-      {userData && <Voicebot />}
+      {userData && <Chatbot />}
     </>
   );
 };
