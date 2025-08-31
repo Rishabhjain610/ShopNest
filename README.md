@@ -86,7 +86,5 @@ The admin can view detailed insights using **Chart.js**:
 ---
 
 ## 🎥 Video Demo
-
-
-
+https://github.com/user-attachments/assets/76b30753-716f-409c-b0ca-29fe68e8fb57
 
