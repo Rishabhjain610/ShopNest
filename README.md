@@ -1,6 +1,6 @@
 # 🛍️ ShopNest – E-commerce Platform
 
-ShopNest is a modern **e-commerce platform** built on **Mern stack**, designed to provide a seamless shopping experience for customers and powerful management tools for admins.  
+ShopNest is a modern **e-commerce platform** built on **MERN stack**, designed to provide a seamless shopping experience for customers and powerful management tools for admins.  
 It supports **clothing sales**, has an **integrated admin panel**, and includes **AI-powered support with Gemini chatbot**.
 
 ---
@@ -16,21 +16,23 @@ It supports **clothing sales**, has an **integrated admin panel**, and includes 
 - **Payments** – Secure payments via Razorpay or Cash on Delivery
 - **Order Tracking** – Users can view real-time order status updated by admin
 - **Gemini AI Chatbot** – Answers queries in the same language the user asks
+- **Notifications via Twilio** – Receive order status updates via  WhatsApp
 
 ---
 
 ### 🛠️ Admin Panel
 - **Product Management**
   - Add, Edit, or Delete products
-  - Change product status (Delivered,cancelled,shipped)
+  - Change product status (Delivered, Cancelled, Shipped)
 - **Order Management**
   - View all orders
   - Update order status (Processing, Shipped, Delivered, Cancelled)
 - **Analytics Dashboard (Chart.js)**
   - 🌍 **Geographical Insights** – Orders by **State & Country**
   - 🧑‍🤝‍🧑 **Demographics** – Purchases split between **Men vs Women**
-  - 👕 **Category Trends** – Performance of categories (Topwear,Bottomwear)
+  - 👕 **Category Trends** – Performance of categories (Topwear, Bottomwear)
   - 📦 **Order Insights** – Total orders, order status breakdown, sales growth
+- **Twilio Integration** – Send automated SMS or WhatsApp updates for orders
 
 ---
 
@@ -41,6 +43,7 @@ It supports **clothing sales**, has an **integrated admin panel**, and includes 
 - **Payments:** Razorpay Integration, Cash on Delivery  
 - **AI Chatbot:** Gemini API  
 - **Translation:** Google Translate API  
+- **Notifications:** Twilio WhatsApp  
 - **Charts & Analytics:** Chart.js  
 
 ---
@@ -87,4 +90,5 @@ The admin can view detailed insights using **Chart.js**:
 
 ## 🎥 Video Demo
 https://github.com/user-attachments/assets/76b30753-716f-409c-b0ca-29fe68e8fb57
+
 
