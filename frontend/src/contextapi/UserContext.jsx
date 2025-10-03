@@ -1,8 +1,13 @@
-import React, { Children, createContext, useContext, useState,useEffect } from "react";
+import React, {
+  Children,
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
 export const UserDataContext = createContext();
 import axios from "axios";
 import { AuthDataContext } from "./AuthContext.jsx";
-
 
 const UserContext = ({ children }) => {
   const [userData, setUserData] = useState(null);
@@ -21,9 +26,9 @@ const UserContext = ({ children }) => {
       console.error("Error fetching current user:", error);
     }
   };
-  useEffect(()=>{
+  useEffect(() => {
     getCurrentUser();
-  },[])
+  }, []);
   const value = {
     userData,
     setUserData,

@@ -1,4 +1,3 @@
-
 import React, { useState, useContext, useEffect } from "react";
 import { ShopDataContext } from "../contextapi/ShopContext";
 import { AuthDataContext } from "../contextapi/AuthContext";
@@ -55,7 +54,10 @@ const Order = () => {
           }`}
         >
           {loading ? (
-            <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
+            <svg
+              className="animate-spin h-5 w-5 text-white"
+              viewBox="0 0 24 24"
+            >
               <circle
                 className="opacity-25"
                 cx="12"
@@ -90,25 +92,31 @@ const Order = () => {
                 />
                 <div className="flex-1 w-full">
                   <div className="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center mb-2">
-                    <h2 className="text-2xl font-bold text-blue-300 mb-2 sm:mb-0">{item.name}</h2>
+                    <h2 className="text-2xl font-bold text-blue-300 mb-2 sm:mb-0">
+                      {item.name}
+                    </h2>
                     <span className="text-blue-100 text-lg font-semibold">
-                      {currency}{item.price}
+                      {currency}
+                      {item.price}
                     </span>
                   </div>
                   <div className="flex flex-wrap gap-x-8 gap-y-2 mb-2 text-blue-100">
                     <span>
-                      <span className="font-semibold">Quantity:</span> {item.quantity}
+                      <span className="font-semibold">Quantity:</span>{" "}
+                      {item.quantity}
                     </span>
                     <span>
                       <span className="font-semibold">Size:</span> {item.size}
                     </span>
                     <span>
-                      <span className="font-semibold">Payment:</span> {item.paymentMethod}
+                      <span className="font-semibold">Payment:</span>{" "}
+                      {item.paymentMethod}
                     </span>
                   </div>
                   <div className="flex flex-wrap gap-x-8 gap-y-2 mb-2 text-blue-100">
                     <span>
-                      <span className="font-semibold">Date:</span> {new Date(item.date).toLocaleDateString()}
+                      <span className="font-semibold">Date:</span>{" "}
+                      {new Date(item.date).toLocaleDateString()}
                     </span>
                     <span>
                       <span className="font-semibold">Status:</span>{" "}
@@ -131,7 +139,9 @@ const Order = () => {
           </div>
         </div>
       ) : (
-        <p className="text-center text-blue-200 text-lg mt-16">No orders found.</p>
+        <p className="text-center text-blue-200 text-lg mt-16">
+          No orders found.
+        </p>
       )}
     </div>
   );

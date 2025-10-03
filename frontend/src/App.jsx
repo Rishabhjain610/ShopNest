@@ -12,7 +12,7 @@ import Navbar from "./components/Navbar";
 import Contact from "./components/Contact.jsx";
 import Product from "./components/Product.jsx";
 import { UserDataContext } from "./contextapi/UserContext.jsx";
-import { AuthDataContext } from "./contextapi/AuthContext.jsx";
+
 import Language from "./components/Language.jsx";
 import ProductDetailspage from "./components/ProductDetailspage.jsx";
 import CollectionPage from "./components/CollectionPage.jsx";
@@ -42,6 +42,7 @@ const App = () => {
       {userData && <Navbar />}
 
       <Routes>
+        <Route path="/" element={<Navigate to="/home" />} />
         <Route
           path="/home"
           element={userData ? <Home /> : <Navigate to="/login" />}

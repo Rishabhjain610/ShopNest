@@ -31,7 +31,7 @@ const ShopContext = ({ children }) => {
     }
 
     // Create a deep copy of the current cart to avoid direct mutation
-    let cartData = structuredClone(cartItem||{});
+    let cartData = structuredClone(cartItem || {});
 
     // Check if the product (id) already exists in the cart
     if (cartData[id]) {
@@ -52,7 +52,7 @@ const ShopContext = ({ children }) => {
     // Update the cart state with the new cart data
     setCartItem(cartData);
     // Log the updated cart for debugging
-   
+
     if (userData) {
       try {
         const response = await axios.post(
@@ -65,7 +65,7 @@ const ShopContext = ({ children }) => {
             withCredentials: true,
           }
         );
-        toast.success("Product added to cart" );
+        toast.success("Product added to cart");
       } catch (error) {
         console.error("Error adding product to cart:", error);
       }
@@ -90,10 +90,7 @@ const ShopContext = ({ children }) => {
     }
   };
 
-
-
   const updatequantity = async (id, size, quantity) => {
-
     let cartData = structuredClone(cartItem);
     if (cartData[id] && cartData[id][size]) {
       cartData[id][size].quantity = quantity;
@@ -120,16 +117,7 @@ const ShopContext = ({ children }) => {
     }
   };
 
-
-
-
-
-
-
-
-
-
-  const getCartAmount =  () => {
+  const getCartAmount = () => {
     let totalAmount = 0; // Initialize total amount
     console.log("Calculating cart amount for: getcart amount", cartItem);
     // Loop through each product in the cart
@@ -154,9 +142,6 @@ const ShopContext = ({ children }) => {
     // Return the total cart amount
     return totalAmount;
   };
-
-
-
 
   const getcartcount = () => {
     let totalcount = 0;
@@ -192,8 +177,7 @@ const ShopContext = ({ children }) => {
     addTocart,
     getUserCart,
     updatequantity,
-    getCartAmount
-
+    getCartAmount,
   };
   return (
     <div>

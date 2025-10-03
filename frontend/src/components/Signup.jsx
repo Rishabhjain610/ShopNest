@@ -38,7 +38,7 @@ const Signup = () => {
       console.error("Signup error:", error);
       toast.error("Signup failed. Please try again.");
     }
-  }; 
+  };
 
   const handleGoogleAuth = async (e) => {
     e.preventDefault();
